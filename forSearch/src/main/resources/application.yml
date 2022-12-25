@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  main:
+    allow-circular-references: true
+  application:
+    name: forSearchLogicApplication
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/forpractice
+    username: postgres
+    password: IUT-2020
+  jpa:
+    show-sql: true
+    database: postgresql
+    hibernate:
+#      ddl-auto: create
+      ddl-auto: update
+#    properties:
+#      hibernate:
+#        search:
+#          enable: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm
+    serialization:
+      fail-on-empty-beans: false
+  sql:
+    init:
+      mode: always
