@@ -14,7 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -31,11 +30,13 @@ public class Securityconfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().and().csrf().disable()
+                .cors()
+                .and()
+                .csrf()
+                .disable()
 //                har bir zaprosdan oldin session yaratish yoki eslab qolmaslik sharti bilan
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
                 .anyRequest()
@@ -62,16 +63,8 @@ public class Securityconfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-
-
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD");
     }
 
 }

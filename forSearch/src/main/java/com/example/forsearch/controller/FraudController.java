@@ -33,6 +33,8 @@ public class FraudController {
         this.prisonRepository = prisonRepository;
     }
 
+
+    @PreAuthorize(value = "hasRole('SUPER_ADMIN')")
     @GetMapping
     public HttpEntity<?> getAll() {
         List<Fraud> fraudList = fraudService.getAll();
@@ -45,7 +47,7 @@ public class FraudController {
         return new ResponseEntity<>(getFraudById, HttpStatus.OK);
     }
 
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @PostMapping("/add")
     public HttpEntity<?> addFraud(@RequestBody FraudDTO fraudDTO) {
         try {

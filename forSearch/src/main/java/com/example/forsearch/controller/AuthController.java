@@ -35,7 +35,7 @@ public class AuthController {
 
     @GetMapping("/me")
     public HttpEntity<?> getMe(@CurrentUser User user) { //Parametr
-        return ResponseEntity.ok().body("Mana" + user);
+        return ResponseEntity.ok().body("Mana" + " " + user.getUsername() + " " + user.getRoles().getName());
     }
 
     @GetMapping("/ketmon")
