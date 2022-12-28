@@ -19,35 +19,43 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtProvider jwtProvider;
-//
-//    public JwtFilter(JwtProvider jwtProvider, AuthService authService) {
-//        this.jwtProvider = jwtProvider;
-//        this.authService = authService;
-//    }
+    JwtProvider jwtProvider;
 
     @Autowired
-    private AuthService authService;
+    AuthService authService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        String token = request.getHeader("Authorization");
 
-        String authorization = request.getHeader("Authorization");
-        if (authorization != null && authorization.startsWith("Bearer")) {
-            authorization = authorization.substring(7);
-            String phoneNumber = jwtProvider.getUsernameFromToken(authorization);
-            if (phoneNumber != null) {
-                UserDetails user = authService.loadUserByUsername(phoneNumber);
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        if (token != null && token.startsWith("Bearer "))
+            token = token.substring(7);
 
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                //System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+        if (jwtProvider.validateToken(token)) {
+            if (jwtProvider.expireToken(token)) {
+                //username oldi tokendan
+                String userName = jwtProvider.getUserNameFromToken(token);
+                System.out.println(token);
+                System.out.println(userName);
+
+                UserDetails userDetails = authService.loadUserByUsername(userName);
+
+                UsernamePasswordAuthenticationToken user = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        userDetails.getPassword(),
+                        userDetails.getAuthorities());
+
+                System.out.println(user);
+                //tizimga kirgan odamni security o'zi un saqlab turibti
+                SecurityContextHolder.getContext().setAuthentication(user);
+
+                System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
             }
-
         }
-        filterChain.doFilter(request, response);
+        //http zanjiri
+        doFilter(request, response, filterChain);
     }
+
 }

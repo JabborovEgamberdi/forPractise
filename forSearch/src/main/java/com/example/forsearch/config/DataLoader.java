@@ -7,7 +7,7 @@ import com.example.forsearch.entity.forSecurity.User;
 import com.example.forsearch.repository.forSecurity.AbstractUsersRepository;
 import com.example.forsearch.repository.forSecurity.RoleRepository;
 import com.example.forsearch.repository.forSecurity.UserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Set;
 
-@RequiredArgsConstructor
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -26,20 +25,28 @@ public class DataLoader implements CommandLineRunner {
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String ddl; //create
 
-    private final RoleRepository roleRepository;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final AbstractUsersRepository abstractUsersRepository;
+    @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    AbstractUsersRepository abstractUsersRepository;
 
     @Override
     public void run(String... args) throws Exception {
+
         if (mode.equals("always") && ddl.equals("create")) {
             Role admin = new Role();
-            admin.setName(RoleEnum.ADMIN);
+            admin.setName(RoleEnum.ROLE_ADMIN);
             Role superadmin = new Role();
-            superadmin.setName(RoleEnum.SUPER_ADMIN);
+            superadmin.setName(RoleEnum.ROLE_SUPER_ADMIN);
             Role user_role = new Role();
-            user_role.setName(RoleEnum.USER);
+            user_role.setName(RoleEnum.ROLE_USER);
 
             roleRepository.save(admin);
             roleRepository.save(superadmin);
@@ -65,6 +72,7 @@ public class DataLoader implements CommandLineRunner {
             abstractUsers.setUsername(user.getUsername());
             abstractUsers.setPassword(2002);
             abstractUsersRepository.save(abstractUsers);
+
 
             User user1 = new User();
             user1.setUsername("KarimovBekhruz");

@@ -47,17 +47,16 @@ public class AuthService implements UserDetailsService {
     }
 
     public ApiResponse<?> register(RegisterDTO registerDTO) {
-
-        if (abstractUsersRepository.existsByUsername(registerDTO.getUsername())) {
-            if (!abstractUsersRepository.findByUsername(registerDTO.getUsername()).get().isEnabled()) {
-                return new ApiResponse<>("The user did not confirm the password sent", false);
-            }
-        } else {
-            return new ApiResponse<>("This user not found", false);
-        }
+   //     if (abstractUsersRepository.existsByUsername(registerDTO.getUsername())) {
+//            if (!abstractUsersRepository.findByUsername(registerDTO.getUsername()).get().isEnabled()) {
+//                return new ApiResponse<>("The user did not confirm the password sent", false);
+//            }
+//        } else {
+//            return new ApiResponse<>("This user not found", false);
+//        }
 
         Set<Role> roleSet = new HashSet<>();
-        roleSet.add(roleRepository.findByName(RoleEnum.USER).get());
+        roleSet.add(roleRepository.findByName(RoleEnum.ROLE_ADMIN).get());
 
 
         User user = new User();
@@ -65,12 +64,12 @@ public class AuthService implements UserDetailsService {
         user.setFirstName(registerDTO.getFirstName());
         user.setLastName(registerDTO.getLastName());
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
-        user.setRoles(roleRepository.findByName(RoleEnum.USER).get());
+        user.setRoles(roleRepository.findByName(RoleEnum.ROLE_ADMIN).get());
         userRepository.save(user);
 
         String token = jwtProvider.generateToken(user.getUsername());
 
-        return new ApiResponse<>("Succesfully registred", true, token);
+        return new ApiResponse<>("Successfully registered", true, token);
     }
 
     public ApiResponse<?> login(LoginDTO dto) {
@@ -79,7 +78,7 @@ public class AuthService implements UserDetailsService {
             User user = byUserName.get();
             if (passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
                 String token = jwtProvider.generateToken(dto.getUsername());
-                return new ApiResponse<>("Succes", true, token);
+                return new ApiResponse<>("Success", true, token);
             } else {
                 return new ApiResponse<>("Password is failed", false);
             }

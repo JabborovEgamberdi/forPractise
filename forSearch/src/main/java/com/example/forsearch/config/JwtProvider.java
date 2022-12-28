@@ -1,9 +1,7 @@
 package com.example.forsearch.config;
 
-import com.example.forsearch.repository.forSecurity.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -11,36 +9,56 @@ import java.util.Date;
 @Component
 public class JwtProvider {
 
-    @Autowired
-    private UserRepository userRepository;
-    private final String secretKey = "asssalomu";
+    String secret = "MaxfiySo'z"; //xoxlagan bo'lishi mn
+    long expireTime = 86400 * 1000; //millisekund
 
-    public String generateToken(String phoneNumber) {
-        long expireTime = 30000L * 86400;
-        System.out.println(new Date(System.currentTimeMillis() + expireTime));
-        String token = Jwts
-                .builder()
-                .setSubject(phoneNumber)
+
+    public String generateToken(String userName) {
+        return Jwts.builder()
+                .signWith(SignatureAlgorithm.HS512,secret)
+                .setSubject(userName)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expireTime))
-                .signWith(SignatureAlgorithm.HS512, secretKey)
-//                .claim("role", userRepository.findByPhoneNumber(phoneNumber).get().getRoles())
                 .compact();
-        return token;
     }
 
-    public String getUsernameFromToken(String token) {
+    //jwt ni expire date
+    public boolean expireToken(String token) {
         try {
-            return Jwts
+            Date expiration = Jwts
                     .parser()
-                    .setSigningKey(secretKey)
+                    .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody()
-                    .getSubject();
+                    .getExpiration();
+            return expiration.after(new Date());
         } catch (Exception e) {
-            return null;
+            return false;
         }
     }
 
+    //jwt ni validatsiya jwtmi token
+    public boolean validateToken(String token) {
+        try {
+            Jwts.
+                    parser().
+                    setSigningKey(secret).
+                    parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            //xatolik
+            return false;
+        }
+    }
+
+    //jwtdan tizim un kim kirdi?
+    public String getUserNameFromToken(String token) {
+        return Jwts
+                .parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
 
 }

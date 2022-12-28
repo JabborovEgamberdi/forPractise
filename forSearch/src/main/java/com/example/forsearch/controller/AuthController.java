@@ -10,11 +10,12 @@ import com.example.forsearch.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth/")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
@@ -43,6 +44,7 @@ public class AuthController {
         return ResponseEntity.status(200).body("Ketmon");
     }
 
+    @PreAuthorize(value = "hasRole('SUPER_ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
         var response = authService.register(registerDTO);
