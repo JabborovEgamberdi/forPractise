@@ -47,7 +47,7 @@ public class AuthService implements UserDetailsService {
     }
 
     public ApiResponse<?> register(RegisterDTO registerDTO) {
-   //     if (abstractUsersRepository.existsByUsername(registerDTO.getUsername())) {
+        //     if (abstractUsersRepository.existsByUsername(registerDTO.getUsername())) {
 //            if (!abstractUsersRepository.findByUsername(registerDTO.getUsername()).get().isEnabled()) {
 //                return new ApiResponse<>("The user did not confirm the password sent", false);
 //            }
@@ -69,6 +69,7 @@ public class AuthService implements UserDetailsService {
 
         String token = jwtProvider.generateToken(user.getUsername());
 
+
         return new ApiResponse<>("Successfully registered", true, token);
     }
 
@@ -85,4 +86,15 @@ public class AuthService implements UserDetailsService {
         }
         return new ApiResponse<>("User not found", false);
     }
+
+    public ApiResponse<?> editRole(Integer id, User user) {
+        Optional<Role> optionalRole = roleRepository.findById(id);
+        if (optionalRole.isPresent()) {
+            user.setRoles(optionalRole.get());
+            userRepository.save(user);
+            return new ApiResponse<>("User role updated successfully", true);
+        }
+        return new ApiResponse<>("There is no user with this id", false);
+    }
+
 }
