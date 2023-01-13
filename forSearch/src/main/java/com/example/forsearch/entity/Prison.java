@@ -1,45 +1,37 @@
 package com.example.forsearch.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity(name = "prison")
-//@Document(indexName = "blog" /*type = "prison"*/)
+@Document(indexName = "prisonindex")
 public class Prison {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Field(type = FieldType.Text, name = "country")
     private String country;
 
+    @Field(type = FieldType.Text, name = "city")
     private String city;
 
+    @Field(type = FieldType.Text, name = "prisonName")
     private String prisonName;
 
-    //    @JsonIgnoreProperties({"firstName", "lastName", "crimeCommit", "crimeTime"})
-    //    @JsonIgnore
-    //    @Field(type = FieldType.Nested, includeInParent = true)
-    //    @OnDelete(action = OnDeleteAction.CASCADE)
-
-    @OneToMany//(/*/*fetch = FetchType.EAGER*/ cascade = CascadeType.ALL)
+    @Field(type = FieldType.Nested, includeInParent = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Fraud> fraud;
-
-//    public void addFraud(Fraud addFraud) {
-//        fraud.add(addFraud);
-//    }
-
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "fraud_id", referencedColumnName = "fraud_id")
-//    private List<Fraud> fraud;
 
 }
