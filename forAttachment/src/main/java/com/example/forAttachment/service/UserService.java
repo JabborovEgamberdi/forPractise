@@ -8,11 +8,11 @@ import com.example.forAttachment.payload.UserDTO;
 import com.example.forAttachment.repository.user.UserAttachmentContentRepository;
 import com.example.forAttachment.repository.user.UserAttachmentRepository;
 import com.example.forAttachment.repository.user.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;

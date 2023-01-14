@@ -3,8 +3,8 @@ package com.example.forAttachment.entity.user;
 import com.example.forAttachment.entity.template.IdClass;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 
 @AllArgsConstructor
 @NoArgsConstructor

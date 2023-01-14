@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Optional;
@@ -137,7 +138,10 @@ public class AttachmentController {
 
 
     @GetMapping("/getFileWithUserID/{id}")
-    public @ResponseBody ResponseEntity getFileWithUserID(@RequestParam(value = "id", required = false) Integer id, HttpServletResponse response) throws IOException {
+    public @ResponseBody ResponseEntity<?> getFileWithUserId(
+            @RequestParam(value = "id", required = false) Integer id,
+            HttpServletResponse response
+    ) throws IOException {
 
         Optional<User> optionalUser = userRepository.findById(id);
 
