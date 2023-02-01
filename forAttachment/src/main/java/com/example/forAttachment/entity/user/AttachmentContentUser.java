@@ -11,11 +11,12 @@ import jakarta.persistence.OneToOne;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity
+@Entity(name = "attachment_content_user")
 public class AttachmentContentUser extends IdClass {
 
     private byte[] bytes;
 
     @OneToOne
     private AttachmentUser attachmentUser;
+
 }

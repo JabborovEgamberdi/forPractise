@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToOne;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
+@Entity(name = "attachment_user")
 public class AttachmentUser extends IdClass {
 
     private String fileOriginalName;

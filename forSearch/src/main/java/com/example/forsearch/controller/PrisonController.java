@@ -6,6 +6,7 @@ import com.example.forsearch.payload.ApiResponse;
 import com.example.forsearch.payload.PrisonDTO;
 import com.example.forsearch.repository.PrisonRepository;
 import com.example.forsearch.service.PrisonService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -110,6 +110,7 @@ public class PrisonController {
     }
 
 
+
     public Prison updatePrison2(@PathVariable Integer id,
                                 @Valid @RequestBody Prison prison) {
         return prisonRepository.findById(id)
@@ -136,6 +137,5 @@ public class PrisonController {
         }
         return new ResponseEntity<>(prisonPage, HttpStatus.OK);
     }
-
 
 }

@@ -2,6 +2,7 @@ package com.example.forsearch;
 
 import com.example.forsearch.entity.Prison;
 import com.example.forsearch.repository.PrisonElasticSearchRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -10,7 +11,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -74,6 +74,6 @@ public class ForSearchApplication {
                 );
             }
         }
-        return Optional.of(null);
+        return Optional.empty();
     }
 }

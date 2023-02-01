@@ -120,7 +120,8 @@ public class AttachmentController {
             if (byUserId.isPresent()) {
                 Attachment attachment = byUserId.get();
 
-                Optional<AttachmentContent> optionalAttachmentContent = attachmentContentRepository.findByAttachmentId(byUserId.get().getId());
+                Optional<AttachmentContent> optionalAttachmentContent =
+                        attachmentContentRepository.findByAttachmentId(byUserId.get().getId());
 
                 if (optionalAttachmentContent.isPresent()) {
                     AttachmentContent attachmentContent = optionalAttachmentContent.get();
@@ -182,5 +183,7 @@ public class AttachmentController {
 
         return new ResponseEntity<>("There is no file with this id", HttpStatus.NO_CONTENT);
     }
+
+
 
 }

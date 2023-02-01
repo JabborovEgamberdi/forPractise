@@ -1,5 +1,6 @@
 package com.example.forAttachment.controller;
 
+import com.example.forAttachment.entity.user.AttachmentContentUser;
 import com.example.forAttachment.entity.user.User;
 import com.example.forAttachment.payload.ApiResponse;
 import com.example.forAttachment.payload.UserDTO;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -21,7 +21,7 @@ public class UserController {
     final UserService userService;
 
     @GetMapping
-    public HttpEntity<?> getAll(){
+    public HttpEntity<?> getAll() {
         List<User> usersList = userService.getAll();
         return new ResponseEntity<>(usersList, HttpStatus.OK);
     }
@@ -32,19 +32,17 @@ public class UserController {
         return new ResponseEntity<>(deleteUser, HttpStatus.OK);
     }
 
-    @GetMapping("/getByUserID/{id}")
-    public HttpEntity<?> getByUserID(@PathVariable Integer id, HttpServletResponse response) {
-        ApiResponse apiResponse = userService.getByIdUser(id, response);
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-    }
+//    @GetMapping("/getByUserID/{id}")
+//    public HttpEntity<?> getByUserID(@PathVariable Integer id, HttpServletResponse response) {
+//        ApiResponse apiResponse = userService.getByIdUser(id, response);
+//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+//    }
 
-//    @EventListener(ApplicationReadyEvent.class)
+    //    @EventListener(ApplicationReadyEvent.class)
     @PostMapping("/add")
     public HttpEntity<?> addUser(@ModelAttribute UserDTO userDTO) {
         ApiResponse addUser = userService.addUser(userDTO);
         return new ResponseEntity<>(addUser, HttpStatus.ACCEPTED);
-
-
     }
 
     @PutMapping("/update/{id}")
@@ -57,6 +55,19 @@ public class UserController {
     public HttpEntity<?> deleteUser(Integer id) {
         ApiResponse deleteUser = userService.deleteUser(id);
         return new ResponseEntity<>(deleteUser, HttpStatus.OK);
+    }
+
+    @GetMapping("/bytes/{id}")
+    public HttpEntity<?> getBytes(@PathVariable Integer id) {
+        try {
+            AttachmentContentUser bytes = userService.getBytes(id);
+            return ResponseEntity.ok().body(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok(
+                    new ApiResponse(e.getMessage(), false)
+            );
+        }
     }
 
 

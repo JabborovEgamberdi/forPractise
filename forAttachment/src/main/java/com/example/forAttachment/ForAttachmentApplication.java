@@ -1,7 +1,5 @@
 package com.example.forAttachment;
 
-//import com.example.forpractise.service.EmailSenderService;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

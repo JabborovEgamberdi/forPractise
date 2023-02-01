@@ -7,7 +7,6 @@ import com.example.forlanguage.repository.ProductRepository;
 import com.example.forlanguage.repository.ProductUz;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -31,7 +30,7 @@ public class ProductService {
         return productRepository.getProductUzLanguage();
     }
 
-    public ApiResponse addProduct(@Valid ProductDTO productDTO){
+    public ApiResponse addProduct(ProductDTO productDTO){
         Product product = new Product();
         product.setProductNameUz(productDTO.getProductNameUz());
         product.setProductNameRu(productDTO.getProductNameRu());
